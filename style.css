@@ -1,13 +1,26 @@
 *{
   /*background-image:url(./back2.jpg);*/
-  background-color: #6EB4F5;
+  background-color: #DEF5FE;
+  font-size: 20px;
+  /*oceanblue-ish: 6FBEDF; */
 }
 /*https://www.pexels.com/photo/close-up-photo-of-blue-body-of-water-1435752/*/
 .menubar{
-  background-color: #0086B2;
-
+  background-color: #748FBF;
+  
+  width: 100%;
+  /*overflow: auto;*/
 }
 
+.menubar button{
+	float: left;
+	padding: 12px;
+	text-decoration: none;
+	width: 25%;
+	text-align: center;
+	font-size: 20px;
+
+}
 .buttons {
   box-shadow: 0px 0px 0px 2px #9fb4f2;
   background:linear-gradient(to bottom, #7892c2 5%, #476e9e 100%);
