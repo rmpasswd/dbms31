@@ -10,33 +10,33 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
 	if (count($_POST) ==5){ // registration
 
-		// add person to person table.
-	$sql1 = "INSERT INTO `person` VALUES ('$nid','$name', '$district', '$subdistrict', '$phone')"; 
+			// add person to person table.
+		$sql1 = "INSERT INTO `person` VALUES ('$nid','$name', '$district', '$subdistrict', '$phone')"; 
 
-	mysqli_query($connec, $sql1) or die("registration failed, try again later". mysqli_error($connec));
-	
-	
-	$dose1date = gendate(); // dose 1 date.
-	$sql2 = "INSERT INTO `dosage_info` VALUES('$nid', '$dose1date', null)";
+		mysqli_query($connec, $sql1) or die("registration failed, try again later". mysqli_error($connec));
 
-	mysqli_query($connec, $sql2) or die("Couldn't find a date, try again later". mysqli_error($connec));
 
-	$center = $subdistrict . " Upazilla Health Complex" ;
-	$centerloc = $subdistrict . ", " . $district ;
+		$dose1date = gendate(); // dose 1 date.
+		$sql2 = "INSERT INTO `dosage_info` VALUES('$nid', '$dose1date', null)";
 
-	$sql3 = "INSERT INTO `center` VALUES('$nid', '$center', '$centerloc')";
-	
-	mysqli_query($connec, $sql3) or die("Couldn't find a Location, try again later". mysqli_error($connec));
-	
+		mysqli_query($connec, $sql2) or die("Couldn't find a date, try again later". mysqli_error($connec));
 
-	 // vaccinated status = 0 initially. 
-	$sql4 = "INSERT INTO `status`(`NID`,`Vaccinated`) VALUES('$nid',0)";
+		$center = $subdistrict . " Upazilla Health Complex" ;
+		$centerloc = $subdistrict . ", " . $district ;
 
-	mysqli_query($connec, $sql4) or die("status set failed, try again later". mysqli_error($connec)); // 1 to vaccinated status.
+		$sql3 = "INSERT INTO `center` VALUES('$nid', '$center', '$centerloc')";
 
-	echo "Registration Complete.<br>
-	Looking forward to seeing you on <b>" . date_format(date_create($dose1date), 'd M Y') . "</b><br>
-	at <b>$center</b>, $centerloc ";
+		mysqli_query($connec, $sql3) or die("Couldn't find a Location, try again later". mysqli_error($connec));
+
+
+		 // vaccinated status = 0 initially. 
+		$sql4 = "INSERT INTO `status`(`NID`,`Vaccinated`) VALUES('$nid',0)";
+
+		mysqli_query($connec, $sql4) or die("status set failed, try again later". mysqli_error($connec)); // 1 to vaccinated status.
+
+		echo "Registration Complete.<br>
+		Looking forward to seeing you on <b>" . date_format(date_create($dose1date), 'd M Y') . "</b><br>
+		at <b>$center</b>, $centerloc ";
 
 	}
 
@@ -58,6 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 	}
 
 }
+
 elseif($_SERVER["REQUEST_METHOD"] == "GET") {
 	extract($_GET);
 	if ($nidcheck != null) { // nid provided.
@@ -66,11 +67,13 @@ elseif($_SERVER["REQUEST_METHOD"] == "GET") {
 	else{ // name provided, not nid.
 		$sql = "select Dose1, Dose2, Center_Name, Location from `dosage_info` natural join `center` where NID = (select NID from person where Name='$namecheck')";
 	}
+	
 	$query = mysqli_query($connec,$sql) or die("Someting is wrong, please try again later". mysqli_error($connec));	
 
 	// got the query result. now make an html table.
 	$rows = mysqli_fetch_assoc($query);
 	extract($rows);
+	
 	echo "Your Center is: $Center_Name <br> Location: $Location<br>";
 	echo "First Dose Date: ". date_format(date_create($Dose1), "d M Y") ."<br>";
 
